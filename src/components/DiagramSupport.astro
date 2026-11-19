@@ -1,0 +1,21 @@
+<script>
+  async function renderDiagrams() {
+    const blocks = [...document.querySelectorAll<HTMLPreElement>('pre[data-language="mermaid"], pre:has(code.language-mermaid)')];
+    if (!blocks.length) return;
+    const { default: mermaid } = await import('mermaid');
+    mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', theme: 'base', fontFamily: 'Microsoft YaHei, sans-serif', themeVariables: { primaryColor: '#e1e8d9', primaryTextColor: '#283b30', primaryBorderColor: '#819779', lineColor: '#617b58', secondaryColor: '#edf1e9', tertiaryColor: '#f9faf6' } });
+    for (const [index, pre] of blocks.entries()) {
+      try {
+        const source = pre.textContent || '';
+        const { svg } = await mermaid.render(`research-diagram-${index}`, source);
+        const figure = document.createElement('figure'); figure.className = 'research-diagram'; figure.setAttribute('aria-label', 'Mermaid 图表'); figure.innerHTML = svg;
+        const details = document.createElement('details'); details.className = 'diagram-source';
+        const summary = document.createElement('summary'); summary.textContent = '查看 Mermaid 源码'; details.append(summary);
+        pre.before(figure, details); details.append(pre);
+      } catch {
+        document.getElementById(`dresearch-diagram-${index}`)?.remove();
+      }
+    }
+  }
+  renderDiagrams().catch(() => {});
+</script>

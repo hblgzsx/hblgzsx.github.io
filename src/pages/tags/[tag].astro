@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/posts';
+import { tagSlug } from '../../lib/tags.mjs';
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = [...new Set(posts.flatMap(p=>p.data.tags))];
+  const slugs = new Set<string>();
+  return tags.map(tag => { const slug=tagSlug(tag); if (slugs.has(slug)) throw new Error(`标签链接冲突：${tag}`); slugs.add(slug); return {params:{tag:slug},props:{tag}}; });
+}
+const { tag }=Astro.props;
+const posts=(await getPosts()).filter(p=>p.data.tags.includes(tag));
+---
+<Base title={`标签：${tag}`}><div class="page-wrap content-narrow"><div class="breadcrumbs"><a href="/tags/">全部标签</a><span>/</span><span>{tag}</span></div><header class="page-heading"><div class="eyebrow">NOTES CONNECTED</div><h1>#{tag}</h1><p>共 {posts.length} 篇相关笔记。</p></header><PostList posts={posts} /></div></Base>

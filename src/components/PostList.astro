@@ -1,0 +1,22 @@
+---
+import type { Post } from '../lib/posts';
+import { dateLabel, readingTime, postUrl } from '../lib/posts';
+import { topics } from '../config';
+import Icon from './Icon.astro';
+import { tagUrl } from '../lib/tags.mjs';
+interface Props { posts: Post[]; }
+const { posts } = Astro.props;
+---
+<div class="post-list">
+  {posts.map(post => (
+    <article class="post-row">
+      <div class="post-date"><time datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time><span>{post.data.kind}</span></div>
+      <div class="post-summary">
+        <h3><a href={postUrl(post)}>{post.data.title}</a></h3>
+        <p>{post.data.description}</p>
+        <div class="post-meta"><a href={`/topics/${post.data.topic}/`}>{topics.find(t => t.id === post.data.topic)?.name}</a><span>·</span><span>{readingTime(post.body)} 分钟阅读</span>{post.data.tags.slice(0, 2).map(tag => <a class="text-tag" href={tagUrl(tag)}>#{tag}</a>)}</div>
+      </div>
+      <a class="row-arrow" href={postUrl(post)} aria-label={`阅读：${post.data.title}`}><Icon name="arrow" /></a>
+    </article>
+  ))}
+</div>

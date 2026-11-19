@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.qa/
+.private/
+cnblogs_blog_*.zip
+.generated/
+public/typst/
+variants/next/source/
+variants/next/public/
+variants/next/db.json
+variants/next/.deploy_git/

@@ -1,0 +1,138 @@
+title: Cyrus · 研究札记
+subtitle: 周树勋 / 合肥工业大学
+description: 计算机视觉、气象大模型与持续学习。记录论文阅读、研究思考与编程实践。
+author: Cyrus / 周树勋
+language: zh-CN
+timezone: Asia/Shanghai
+url: https://hblgzsx.github.io/next
+root: /next/
+permalink: posts/:title/
+pretty_urls:
+  trailing_index: false
+source_dir: source
+public_dir: ../../dist/next
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+include: []
+exclude: []
+skip_render:
+  - assets/**
+  - writing/**
+  - topics/**
+  - theme-switch.js
+  - reading.css
+  - avatar.svg
+  - search/**
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link:
+  enable: true
+  field: site
+  exclude: []
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: false
+highlight:
+  enable: false
+prismjs:
+  enable: false
+index_generator:
+  path: blog
+  per_page: 8
+  order_by: -date
+pagination_dir: page
+per_page: 8
+theme: next
+feed:
+  type: atom
+  path: atom.xml
+  limit: 0
+  content: false
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
+markdown:
+  render:
+    html: true
+    breaks: false
+  disableNunjucks: true
+theme_config:
+  vendors:
+    internal: local
+    fontawesome: /assets/fontawesome/css/all.min.css
+    local_search: /assets/searchdb/search.js
+  scheme: Pisces
+  darkmode: false
+  lightdark:
+    enable: false
+  menu:
+    home: / || fa fa-home
+    文章: /blog/ || fa fa-book-open
+    categories: /categories/ || fa fa-layer-group
+    archives: /archives/ || fa fa-archive
+    about: /about/ || fa fa-user
+    Astro 版: https://hblgzsx.github.io/ || fa fa-exchange-alt
+  menu_settings:
+    icons: false
+    badges: false
+  sidebar:
+    position: left
+    display: always
+    width_dual_column: 250
+    offset: 20
+  avatar:
+    url: /avatar.svg
+    rounded: false
+    rotated: false
+  social:
+    GitHub: https://github.com/hblgzsx || fab fa-github
+    E-Mail: mailto:cyrus.zhou@mail.hfut.edu.cn || fa fa-envelope
+    学术主页: https://hblgzsx.github.io/Academic-Homepage-Typst-Tufted/ || fa fa-graduation-cap
+  social_icons:
+    enable: false
+  toc:
+    enable: true
+    number: false
+    wrap: true
+    expand_all: true
+    max_depth: 3
+  footer:
+    since: 2023
+    icon:
+      name: fa fa-leaf
+      animated: false
+    powered: true
+  font:
+    enable: false
+  motion:
+    enable: false
+  math:
+    every_page: false
+    mathjax:
+      enable: false
+    katex:
+      enable: false
+  local_search:
+    enable: true
+    trigger: auto
+    top_n_per_article: 2
+    unescape: false
+    preload: true
+  back2top:
+    enable: true
+    sidebar: false
+    scrollpercent: true
+  codeblock:
+    copy_button:
+      enable: true
+  custom_file_path:
+    head: source/_data/head.njk
+    bodyEnd: source/_data/body-end.njk
+    style: source/_data/styles.styl

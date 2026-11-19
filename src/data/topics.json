@@ -1,0 +1,7 @@
+[
+  { "id": "machine-learning", "name": "机器学习与视觉", "en": "LEARNING & VISION", "description": "机器学习、计算机视觉与图像处理的基础、论文阅读和实验笔记。", "icon": "network" },
+  { "id": "algorithms", "name": "算法与竞赛", "en": "ALGORITHMS & CONTESTS", "description": "从算法基础到竞赛题解，整理数据结构、解题思路与训练复盘。", "icon": "code" },
+  { "id": "programming", "name": "编程与工程", "en": "PROGRAMMING & ENGINEERING", "description": "C++、Python、数据库与工程环境配置，记录可以复用的编程实践。", "icon": "terminal" },
+  { "id": "writing", "name": "学术写作与工具", "en": "WRITING & TOOLS", "description": "Markdown、LaTeX、Typst 与图表工具，让表达和知识整理更清晰。", "icon": "book" },
+  { "id": "notes", "name": "随想与资料", "en": "THOUGHTS & RESOURCES", "description": "保留学习途中的个人随想、资料与零散记录。", "icon": "book" }
+]

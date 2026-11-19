@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import { site } from '../config';
+import Icon from '../components/Icon.astro';
+import DiagramSupport from '../components/DiagramSupport.astro';
+interface Props { title?: string; description?: string; article?: boolean; }
+const { title, description = site.description, article = false } = Astro.props;
+const fullTitle = title ? `${title} — ${site.title}` : site.title;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const path = Astro.url.pathname;
+const alternate = /^\/404(?:\/|\.html)?$/.test(path) ? '/next/' : `/next${path}`;
+const nav = [{ href: '/', label: '首页' }, { href: '/writing/', label: '文章' }, { href: '/topics/', label: '专题' }, { href: '/tags/', label: '标签' }, { href: '/archives/', label: '归档' }, { href: '/about/', label: '关于' }];
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="author" content={site.author} />
+    <meta name="theme-color" content="#edf1e9" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{fullTitle}</title>
+    <script is:inline>try { const t = localStorage.getItem('theme'); document.documentElement.dataset.theme = t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; } catch { document.documentElement.dataset.theme = 'light'; }</script>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">跳转到正文</a>
+    <header class="site-header" data-pagefind-ignore>
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="Cyrus 研究札记首页"><span class="brand-icon"><Icon name="book" size={21} /></span><span>Cyrus<span class="brand-divider">/</span><strong>研究札记</strong></span></a>
+        <nav aria-label="主导航">{nav.map(item => <a href={item.href} class:list={{ active: item.href === '/' ? path === '/' : path.startsWith(item.href) }} aria-current={(item.href === '/' ? path === '/' : path.startsWith(item.href)) ? 'page' : undefined}>{item.label}</a>)}</nav>
+        <div class="header-tools"><a class="version-switch" href={alternate} title="切换到 Hexo NexT 版">NexT ↗</a><a href="/search/" aria-label="搜索文章" title="搜索文章"><Icon name="search" size={19} /></a><span class="tool-divider"></span><button id="theme-toggle" aria-label="切换深浅主题" title="切换深浅主题"><span class="theme-sun"><Icon name="sun" size={19} /></span><span class="theme-moon"><Icon name="moon" size={19} /></span></button></div>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer" data-pagefind-ignore><div class="footer-inner"><div><a class="footer-name" href="/">Cyrus · 研究札记</a><p>保持好奇，认真记录。</p></div><div class="footer-right"><div class="footer-links"><a href={alternate}>切换 NexT 版 ↗</a><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <Icon name="diagonal" size={13} /></a><a href="/rss.xml">RSS <Icon name="rss" size={13} /></a><a href="/about/">关于本站</a></div><p>© {new Date().getFullYear()} Cyrus <span>·</span> Built with Astro</p></div></div></footer>
+    <DiagramSupport />
+    <script>
+      const button = document.getElementById('theme-toggle');
+      const syncLabel = () => button?.setAttribute('aria-label', document.documentElement.dataset.theme === 'dark' ? '切换为浅色主题' : '切换为深色主题');
+      syncLabel();
+      button?.addEventListener('click', () => {
+        const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        try { localStorage.setItem('theme', theme); } catch {}
+        syncLabel();
+      });
+    </script>
+  </body>
+</html>

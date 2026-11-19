@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="搜索文章"><div class="page-wrap content-narrow"><header class="page-heading"><div class="eyebrow">SEARCH THE NOTEBOOK</div><h1>寻找一段思路</h1><p>搜索文章标题、正文与代码，在笔记里找到需要的内容。</p></header><div id="search"></div><noscript><p class="search-tip">搜索需要启用 JavaScript。你也可以通过<a href="/archives/">时间归档</a>浏览全部文章。</p></noscript><p id="search-fallback" class="search-tip" hidden>搜索索引暂未就绪。请先浏览<a href="/writing/">全部文章</a>，或在本地运行 npm run build 后使用 npm run preview。</p></div></Base>
+<script>
+  async function initSearch() {
+    try {
+      const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = '/pagefind/pagefind-ui.css'; document.head.appendChild(css);
+      await new Promise<void>((resolve, reject) => { const script = document.createElement('script'); script.src = '/pagefind/pagefind-ui.js'; script.onload = () => resolve(); script.onerror = reject; document.head.appendChild(script); });
+      const PagefindUI = (window as unknown as { PagefindUI: new (options: Record<string, unknown>) => unknown }).PagefindUI;
+      new PagefindUI({ element: '#search', showSubResults: true, showImages: false, resetStyles: false, translations: { placeholder: '搜索文章、概念或代码…', clear_search: '清除', load_more: '加载更多', search_label: '搜索本站文章', filters_label: '筛选', zero_results: '没有找到“[SEARCH_TERM]”的相关内容', many_results: '找到 [COUNT] 条“[SEARCH_TERM]”的相关结果', one_result: '找到 1 条“[SEARCH_TERM]”的相关结果', searching: '正在查找…' } });
+    } catch { const fallback = document.getElementById('search-fallback'); if (fallback) fallback.hidden = false; }
+  }
+  initSearch();
+</script>

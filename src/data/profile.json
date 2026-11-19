@@ -1,0 +1,36 @@
+{
+  "name": "周树勋",
+  "englishName": "Cyrus",
+  "publicationName": "Shuxun Zhou",
+  "role": "计算机科学与技术 · 硕士研究生",
+  "institution": "合肥工业大学",
+  "location": "中国 · 合肥",
+  "email": "cyrus.zhou@mail.hfut.edu.cn",
+  "github": "https://github.com/hblgzsx",
+  "photo": "/images/profile/cyrus.jpg",
+  "biography": "我是一名专门研究计算机视觉和气象大模型的硕士生。我在华北理工大学完成了学士学位，现就读于合肥工业大学攻读硕士学位。",
+  "interests": [
+    { "name": "计算机视觉", "english": "Computer Vision" },
+    { "name": "气象大模型", "english": "AI for Weather Forecasting" }
+  ],
+  "education": [
+    { "school": "合肥工业大学", "major": "计算机科学与技术", "degree": "硕士研究生", "period": "2025.09 — 至今", "note": "预计 2028.06 毕业" },
+    { "school": "华北理工大学", "major": "智能科学与技术", "degree": "学士", "period": "2021.09 — 2025.06", "note": "" }
+  ],
+  "publications": [
+    {
+      "title": "Bridging the Gap Between Bayesian Deep Learning and Ensemble Weather Forecasts",
+      "authors": ["Xinlei Xiong", "Wenbo Hu", "Shuxun Zhou", "Kaifeng Bi", "Lingxi Xie", "Ying Liu", "Richang Hong", "Qi Tian"],
+      "year": "2025",
+      "venue": "arXiv preprint · 2511.14218v1",
+      "url": "https://arxiv.org/abs/2511.14218v1",
+      "latest": "https://arxiv.org/abs/2511.14218",
+      "bibtex": "@misc{xiong2025bridginggapbayesiandeep,\n  title={Bridging the Gap Between Bayesian Deep Learning and Ensemble Weather Forecasts},\n  author={Xinlei Xiong and Wenbo Hu and Shuxun Zhou and Kaifeng Bi and Lingxi Xie and Ying Liu and Richang Hong and Qi Tian},\n  year={2025},\n  eprint={2511.14218v1},\n  archivePrefix={arXiv},\n  primaryClass={cs.LG},\n  url={https://arxiv.org/abs/2511.14218v1}\n}"
+    }
+  ],
+  "awards": [
+    { "title": "全国大学生统计建模大赛", "detail": "第九、十、十一届", "result": "省一等奖 / 省一等奖 / 全国三等奖" },
+    { "title": "美国大学生数学建模竞赛", "detail": "2023 MCM / 2024 ICM", "result": "Honorable Mention / Meritorious Winner" },
+    { "title": "高校计算机大赛 · 团体程序设计天梯赛", "detail": "第八、九届", "result": "全国二等奖 / 全国三等奖" }
+  ]
+}

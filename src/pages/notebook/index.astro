@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import Icon from '../../components/Icon.astro';
+import { getPosts, postUrl, dateLabel, readingTime } from '../../lib/posts';
+import { site, topics } from '../../config';
+const posts = await getPosts();
+const featured = posts.find(post => post.data.featured) || posts[0];
+const featuredTopic = topics.find(t => t.id === featured?.data.topic);
+---
+<Base>
+  <div class="home-wrap">
+    <section class="hero">
+      <div class="hero-main"><div class="eyebrow"><span class="status-dot"></span> A PERSONAL RESEARCH NOTEBOOK</div><h1>记录思考，<br />让知识<span class="serif-accent">慢慢生长。</span></h1><p class="hero-description">你好，我是 <strong>{site.author}</strong>，合肥工业大学硕士研究生。<br />关注计算机视觉与气象大模型，<br class="mobile-break" />在这里记录论文阅读、研究思考与编程实践。</p><div class="hero-actions"><a class="button-primary" href="/writing/">阅读文章 <Icon name="arrow" size={17} /></a><a class="quiet-link" href={site.academic} target="_blank" rel="noopener noreferrer">学术主页 <Icon name="diagonal" size={16} /></a></div></div>
+      <aside class="notebook-card"><div class="notebook-top"><span>FIELD NOTES</span><Icon name="book" size={18} /></div><div class="notebook-rule"></div><p class="notebook-quote">读有所思，<br />学有所记。</p><p class="notebook-sub">READ. THINK. WRITE. REPEAT.</p><div class="notebook-bottom"><span>始于 2023</span><span>持续积累中 <i></i></span></div></aside>
+    </section>
+    <div class="home-grid">
+      <div class="main-column">
+        {featured && <section class="featured-section"><div class="section-heading"><h2><span class="section-number">01</span>精选笔记</h2><span class="section-en">EDITOR'S PICK</span></div><article class="featured-card"><div class="featured-meta"><span class="featured-badge">值得回顾</span><span>{featuredTopic?.name}</span><span>·</span><span>{featured.data.kind}</span></div><h3><a href={postUrl(featured)}>{featured.data.title}</a></h3><p>{featured.data.description}</p><div class="featured-bottom"><span>{dateLabel(featured.data.date)}<span class="meta-separator">/</span>{readingTime(featured.body)} 分钟阅读</span><a href={postUrl(featured)}>阅读全文 <Icon name="arrow" size={17} /></a></div></article></section>}
+        <section class="recent-section"><div class="section-heading"><h2><span class="section-number">02</span>最近文章 <span class="count-label">{posts.length}</span></h2><a class="section-link" href="/writing/">全部文章 <Icon name="arrow" size={15} /></a></div><PostList posts={posts.slice(0, 5)} /><a class="all-writing" href="/writing/">查看全部文章 <Icon name="arrow" size={16} /></a></section>
+      </div>
+      <aside class="home-sidebar"><section class="profile-section"><div class="sidebar-eyebrow">ABOUT THE AUTHOR</div><div class="author-heading"><span class="author-avatar">周</span><div><h2>{site.author}</h2><span>{site.englishName}</span></div></div><p>合肥工业大学 · 计算机科学与技术<br />硕士研究生<br />计算机视觉 / 气象大模型</p><a class="small-link" href="/about/">更多关于我 <Icon name="diagonal" size={14} /></a><div class="profile-stats"><a href="/writing/"><strong>{posts.length.toString().padStart(2, '0')}</strong><span>篇文章</span></a><a href="/topics/"><strong>{topics.length.toString().padStart(2, '0')}</strong><span>个专题</span></a><a href="/archives/"><strong>2023</strong><span>开始记录</span></a></div></section><section class="sidebar-topics"><div class="sidebar-heading"><h2>探索专题</h2><span>TOPICS</span></div>{topics.map(topic => <a class="sidebar-topic" href={`/topics/${topic.id}/`}><Icon name={topic.icon} size={18} /><span>{topic.name}</span><span class="topic-count">{posts.filter(p => p.data.topic === topic.id).length.toString().padStart(2, '0')}</span></a>)}</section><section class="sidebar-note"><span class="sidebar-eyebrow">A NOTE TO SELF</span><p>不急于给出答案，<br />先认真理解问题。</p><span class="note-line"></span><span class="note-caption">写作，是另一种思考。</span></section><a class="rss-link" href="/rss.xml"><Icon name="rss" size={18} /><div><strong>订阅更新</strong><span>通过 RSS，安静地保持联系。</span></div><Icon name="diagonal" size={16} /></a></aside>
+    </div>
+    <section class="topics-overview"><div class="section-heading"><h2><span class="section-number">03</span>沿着专题，系统积累</h2><a class="section-link" href="/topics/">浏览专题 <Icon name="arrow" size={15} /></a></div><div class="topic-cards">{topics.map((topic, i) => <a class="topic-card" href={`/topics/${topic.id}/`}><div class="topic-card-top"><Icon name={topic.icon} size={22} /><span>0{i + 1}</span></div><span class="topic-card-en">{topic.en}</span><h3>{topic.name}</h3><p>{topic.description}</p><div class="topic-card-bottom"><span>{posts.filter(p => p.data.topic === topic.id).length} 篇笔记</span><Icon name="arrow" size={18} /></div></a>)}</div></section>
+  </div>
+</Base>

@@ -1,0 +1,39 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getPosts, postUrl, readingTime, dateLabel } from '../../lib/posts';
+import { site, topics } from '../../config';
+import { tagUrl } from '../../lib/tags.mjs';
+export async function getStaticPaths() { const posts = await getPosts(); return posts.map((post, index) => ({ params: { id: post.id }, props: { post, newer: posts[index - 1], older: posts[index + 1] } })); }
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await render(post);
+const outline = headings.filter(h => h.depth === 2 || h.depth === 3);
+const topic = topics.find(t => t.id === post.data.topic);
+const jsonLd = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.data.title, description: post.data.description, datePublished: post.data.date.toISOString(), dateModified: (post.data.updated || post.data.date).toISOString(), author: { '@type': 'Person', name: site.author, url: `${site.url}/about/` }, mainEntityOfPage: new URL(postUrl(post), site.url).href };
+---
+<Base title={post.data.title} description={post.data.description} article>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replaceAll('<', '\u003c')} />
+  <div class="reading-progress" aria-hidden="true"></div>
+  <div class="article-wrap"><div class="breadcrumbs" data-pagefind-ignore><a href="/writing/">全部文章</a><span>/</span><a href={`/topics/${post.data.topic}/`}>{topic?.name}</a><span>/</span><span>正文</span></div><div class="article-grid"><article data-pagefind-body><header class="article-header"><div class="article-kicker"><a href={`/topics/${post.data.topic}/`}>{topic?.name}</a><span>·</span><span>{post.data.kind}</span></div><h1 data-pagefind-meta="title">{post.data.title}</h1><p class="article-description" data-pagefind-meta="description">{post.data.description}</p><div class="article-byline" data-pagefind-ignore><span>Cyrus / {site.author}</span><span>·</span><time datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time><span>·</span><span>{readingTime(post.body)} 分钟阅读</span>{post.data.updated && <><span>·</span><span>更新于 {dateLabel(post.data.updated)}</span></>}</div><div class="article-tags" data-pagefind-ignore>{post.data.tags.map(tag => <a href={tagUrl(tag)}>#{tag}</a>)}</div>{post.data.source && <p class="article-source" data-pagefind-ignore>原文发布于 <a href={post.data.source} target="_blank" rel="noopener noreferrer">博客园 · {post.data.sourceType}</a></p>}{post.data.format === 'typst' && <div class="typst-downloads" data-pagefind-ignore><span>Typst 原生文章</span><a href={`/typst/${post.id}.pdf`} download>下载 PDF ↓</a><a href={`/typst/${post.id}.typ`} download>下载 .typ 源文件 ↓</a></div>}</header>{outline.length > 0 && <details class="mobile-toc" data-pagefind-ignore><summary>文章目录 · {outline.length} 个章节</summary><nav aria-label="文章目录">{outline.map(h => <a href={`#${h.slug}`} data-depth={h.depth}>{h.text}</a>)}</nav></details>}<div class="article-body"><Content /></div><div class="article-end" data-pagefind-ignore>{post.data.source && <p class="article-source">原文来源：<a href={post.data.source} target="_blank" rel="noopener noreferrer">{post.data.sourceType || '博客园'} ↗</a></p>}<p><strong>感谢阅读。</strong> 这是一篇个人学习记录，欢迎通过 <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a> 交流与指正。</p></div><nav class="post-navigation" aria-label="相邻文章" data-pagefind-ignore>{newer ? <a href={postUrl(newer)}><span>← 较新的文章</span><strong>{newer.data.title}</strong></a> : <div></div>}{older && <a href={postUrl(older)}><span>较早的文章 →</span><strong>{older.data.title}</strong></a>}</nav></article><aside class="toc-sidebar" data-pagefind-ignore><div class="toc-title">本页目录</div><nav aria-label="文章目录">{outline.length ? outline.map(h => <a href={`#${h.slug}`} data-depth={h.depth}>{h.text}</a>) : <a href="#main">文章正文</a>}</nav><div class="toc-end"><a href="#main">↑ 回到顶部</a><a href="/writing/">← 全部文章</a></div></aside></div></div>
+</Base>
+<script>
+  document.querySelectorAll<HTMLPreElement>('.article-body pre').forEach(pre => {
+    const wrapper = document.createElement('div'); wrapper.className = 'code-wrapper';
+    pre.parentNode?.insertBefore(wrapper, pre); wrapper.appendChild(pre);
+    const button = document.createElement('button'); button.className = 'copy-code'; button.textContent = '复制代码'; button.setAttribute('aria-label', '复制此代码块');
+    button.addEventListener('click', async () => { try { await navigator.clipboard.writeText(pre.querySelector('code')?.textContent || pre.textContent || ''); button.textContent = '已复制 ✓'; setTimeout(() => { button.textContent = '复制代码'; }, 1800); } catch { button.textContent = '请手动选择复制'; } });
+    wrapper.appendChild(button);
+  });
+  const progress = document.querySelector<HTMLElement>('.reading-progress');
+  let queued = false;
+  const updateProgress = () => { const height = document.documentElement.scrollHeight - innerHeight; if (progress) progress.style.transform = `scaleX(${height > 0 ? Math.min(1, scrollY / height) : 1})`; queued = false; };
+  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(updateProgress); } }, { passive: true });
+  addEventListener('resize', updateProgress); updateProgress();
+  const headings = document.querySelectorAll<HTMLElement>('.article-body h2, .article-body h3');
+  const links = document.querySelectorAll<HTMLAnchorElement>('.toc-sidebar nav a');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => { const visible = entries.filter(e => e.isIntersecting); if (!visible.length) return; const id = visible[0].target.id; links.forEach(link => link.classList.toggle('is-active', link.hash === `#${id}`)); }, { rootMargin: '-8% 0px -70% 0px' });
+    headings.forEach(h => observer.observe(h));
+  }
+  document.querySelectorAll<HTMLImageElement>('.article-body img').forEach(img => { img.loading = 'lazy'; img.decoding = 'async'; img.addEventListener('error', () => { const note = document.createElement('span'); note.className = 'image-unavailable'; note.textContent = `原文配图暂不可用${img.alt ? `：${img.alt}` : ''}`; img.replaceWith(note); }, { once: true }); });
+</script>

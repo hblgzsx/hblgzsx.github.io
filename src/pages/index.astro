@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import profile from '../data/profile.json';
+import { getPosts, postUrl, dateLabel } from '../lib/posts';
+const posts = await getPosts();
+const researchNotes = posts.filter(p => p.data.topic === 'machine-learning').slice(0, 3);
+---
+<Base title="周树勋 Cyrus · 个人学术主页">
+  <link rel="stylesheet" href="/academic.css" />
+  <div class="academic-shell">
+    <div class="academic-home">
+      <header class="academic-identity">
+        <div class="academic-intro"><div class="academic-kicker">PERSONAL ACADEMIC HOMEPAGE</div><h1>{profile.name}<span>{profile.englishName}</span></h1><p class="academic-name-en">{profile.publicationName}</p><p class="academic-role">{profile.role}</p><p class="academic-institution">{profile.institution}<span>·</span>{profile.location}</p><div class="academic-contact"><a href={`mailto:${profile.email}`}><Icon name="book" size={15} />Email</a><a href={profile.github} target="_blank" rel="noopener noreferrer"><Icon name="github" size={15} />GitHub</a><a href="#publications">Publications <Icon name="diagonal" size={13} /></a></div></div>
+        <figure class="academic-portrait"><img src={profile.photo} alt="周树勋 Cyrus" width="150" height="210" /><figcaption>{profile.institution}<br />Hefei University of Technology</figcaption></figure>
+      </header>
+      <div class="academic-columns"><div class="academic-content">
+        <section class="academic-section" id="biography"><div class="academic-section-title"><h2>个人简介</h2><span>ABOUT ME</span></div><p class="academic-biography">{profile.biography}</p><p class="academic-contact-line">欢迎通过 <a href={`mailto:${profile.email}`}>{profile.email}</a> 与我联系。</p></section>
+        <section class="academic-section" id="research"><div class="academic-section-title"><h2>研究方向</h2><span>RESEARCH INTERESTS</span></div><div class="academic-interests">{profile.interests.map((interest, index) => <div><span class="interest-index">0{index + 1}</span><div><h3>{interest.name}</h3><p>{interest.english}</p></div></div>)}</div></section>
+        <section class="academic-section" id="publications"><div class="academic-section-title"><h2>论文与预印本</h2><span>PUBLICATIONS</span></div>{profile.publications.map(paper => <article class="publication"><div class="publication-year">{paper.year}</div><div class="publication-main"><h3><a href={paper.url} target="_blank" rel="noopener noreferrer">{paper.title}</a></h3><p class="publication-authors">{paper.authors.map((author, index) => <>{index > 0 && ', '}{author === profile.publicationName ? <strong>{author}</strong> : author}</>)}</p><p class="publication-venue">{paper.venue}</p><div class="publication-links"><a href={paper.url} target="_blank" rel="noopener noreferrer">Paper <Icon name="diagonal" size={12} /></a><a href={paper.latest} target="_blank" rel="noopener noreferrer">最新版本 <Icon name="diagonal" size={12} /></a><details><summary>BibTeX</summary><pre>{paper.bibtex}</pre></details></div></div></article>)}</section>
+        <section class="academic-section" id="education"><div class="academic-section-title"><h2>教育经历</h2><span>EDUCATION</span></div><div class="education-list">{profile.education.map(item => <article class="education-item"><div class="education-date">{item.period}</div><div><h3>{item.school}<span>{item.degree}</span></h3><p>{item.major}</p>{item.note && <p class="education-note">{item.note}</p>}</div></article>)}</div></section>
+        <section class="academic-section" id="awards"><div class="academic-section-title"><h2>竞赛与荣誉</h2><span>HONORS & AWARDS</span></div><div class="academic-awards">{profile.awards.map(award => <article><div><h3>{award.title}</h3><p>{award.detail}</p></div><span>{award.result}</span></article>)}</div></section>
+        <section class="academic-section academic-notes-section" id="notes"><div class="academic-section-title"><h2>研究笔记</h2><a href="/writing/">全部文章 <Icon name="arrow" size={15} /></a></div><p class="academic-section-description">论文阅读、基础概念与实践过程的持续记录。</p><div class="academic-recent">{researchNotes.map(post => <article><time datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time><a href={postUrl(post)}>{post.data.title}</a><Icon name="arrow" size={14} /></article>)}</div></section>
+      </div><aside class="academic-margin"><nav aria-label="学术主页内容导航"><div class="margin-label">ON THIS PAGE</div><a href="#biography">个人简介</a><a href="#research">研究方向</a><a href="#publications">论文与预印本</a><a href="#education">教育经历</a><a href="#awards">竞赛与荣誉</a></nav><div class="margin-reading"><div class="margin-label">RESEARCH NOTEBOOK</div><p>阅读、思考与实践，<br />也在文字中留下记录。</p><a href="/writing/">浏览 {posts.length} 篇文章 <Icon name="arrow" size={14} /></a><a href="/topics/">按大类阅读 <Icon name="arrow" size={14} /></a><a href="/tags/">标签索引 <Icon name="arrow" size={14} /></a></div><div class="margin-bottom"><span>保持好奇。<br />认真研究。</span><a href="/rss.xml">RSS 订阅 ↗</a></div></aside></div>
+    </div>
+  </div>
+</Base>

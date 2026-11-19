@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { topics } from '../../config';
+import { getPosts } from '../../lib/posts';
+export function getStaticPaths() { return topics.map(topic => ({ params: { topic: topic.id }, props: { topic } })); }
+const { topic } = Astro.props;
+const posts = (await getPosts()).filter(post => post.data.topic === topic.id);
+---
+<Base title={topic.name} description={topic.description}><div class="page-wrap content-narrow"><div class="breadcrumbs"><a href="/topics/">全部专题</a><span>/</span><span>{topic.name}</span></div><header class="page-heading"><div class="eyebrow">{topic.en}</div><h1>{topic.name}</h1><p>{topic.description} 共 {posts.length} 篇笔记。</p></header><PostList posts={posts} /></div></Base>

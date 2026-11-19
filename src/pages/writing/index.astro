@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/posts';
+import { topics } from '../../config';
+const posts = await getPosts();
+---
+<Base title="全部文章"><div class="page-wrap content-narrow"><header class="page-heading"><div class="eyebrow">WRITING & NOTES</div><h1>文章与笔记</h1><p>把阅读变成理解，把实践整理成可以回看的记录。共 {posts.length} 篇文章。</p></header><div class="filter-bar" role="group" aria-label="按专题筛选"><button class="filter-button" data-filter="all" aria-pressed="true">全部<span>{posts.length}</span></button>{topics.map(t => <button class="filter-button" data-filter={t.id} aria-pressed="false">{t.name}<span>{posts.filter(p => p.data.topic === t.id).length}</span></button>)}</div><p id="filter-status" class="sr-only" role="status" aria-live="polite"></p><div id="writing-list">{posts.map(post => <div data-topic={post.data.topic}><PostList posts={[post]} /></div>)}</div></div></Base>
+<style>.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}#writing-list :global(.post-row){padding:23px 0}</style>
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const rows = document.querySelectorAll<HTMLElement>('#writing-list [data-topic]');
+  function filter(value: string) {
+    const valid = Array.from(buttons).some(b => b.dataset.filter === value) ? value : 'all';
+    buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === valid)));
+    let count = 0;
+    rows.forEach(row => { row.hidden = valid !== 'all' && row.dataset.topic !== valid; if (!row.hidden) count++; });
+    const status = document.getElementById('filter-status');
+    if (status) status.textContent = `显示 ${count} 篇文章`;
+  }
+  filter(new URLSearchParams(location.search).get('topic') || 'all');
+  buttons.forEach(button => button.addEventListener('click', () => {
+    const value = button.dataset.filter || 'all';
+    const url = new URL(location.href);
+    if (value === 'all') url.searchParams.delete('topic'); else url.searchParams.set('topic', value);
+    history.replaceState(null, '', url);
+    filter(value);
+  }));
+  window.addEventListener('popstate', () => filter(new URLSearchParams(location.search).get('topic') || 'all'));
+</script>

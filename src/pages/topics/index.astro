@@ -1,0 +1,8 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { topics } from '../../config';
+import { getPosts } from '../../lib/posts';
+const posts = await getPosts();
+---
+<Base title="专题"><div class="page-wrap"><header class="page-heading"><div class="eyebrow">EXPLORE BY TOPIC</div><h1>沿着专题，系统积累</h1><p>把零散的知识连接起来，让每一篇笔记成为下一步的起点。</p></header><p class="search-tip"><a href="/tags/">按技术、方法与工具查看全部标签 →</a></p><div class="topic-cards">{topics.map((topic, i) => <a class="topic-card" href={`/topics/${topic.id}/`}><div class="topic-card-top"><Icon name={topic.icon} size={24} /><span>0{i + 1}</span></div><span class="topic-card-en">{topic.en}</span><h3>{topic.name}</h3><p>{topic.description}</p><div class="topic-card-bottom"><span>{posts.filter(p => p.data.topic === topic.id).length} 篇笔记</span><Icon name="arrow" size={18} /></div></a>)}</div></div></Base>

@@ -1,0 +1,78 @@
+{
+  "articles": [
+    {
+      "file": "ACM算法@离散化",
+      "slug": "coordinate-compression",
+      "date": "2023-12-30",
+      "legacy": "/2023/12/30/ACM算法@离散化/"
+    },
+    {
+      "file": "个人C++编程积累小知识",
+      "slug": "cpp-practice-notes",
+      "date": "2024-02-08",
+      "legacy": "/2024/02/08/个人C++编程积累小知识/"
+    },
+    {
+      "file": "机器学习",
+      "slug": "apmcm-2023-fruit-recognition",
+      "date": "2023-12-28",
+      "legacy": "/2023/12/28/机器学习/"
+    },
+    {
+      "file": "2024年牛客寒假集训营第一场补题记录",
+      "slug": "nowcoder-winter-2024-01",
+      "date": "2024-02-29",
+      "legacy": "/2024/02/29/2024年牛客寒假集训营第一场补题记录/"
+    },
+    {
+      "file": "Codeforce Round 929（Div.3）",
+      "slug": "codeforces-929",
+      "date": "2024-02-29",
+      "legacy": "/2024/02/29/Codeforce Round 929（Div.3）/"
+    },
+    {
+      "file": "Codeforces Round 923 (Div.3)",
+      "slug": "codeforces-923",
+      "date": "2024-02-09",
+      "legacy": "/2024/02/09/Codeforces Round 923 (Div.3)/"
+    },
+    {
+      "file": "2023年第十四届蓝桥杯省赛B组AC代码",
+      "slug": "lanqiao-2023-b",
+      "date": "2024-01-30",
+      "legacy": "/2024/01/30/2023年第十四届蓝桥杯省赛B组AC代码/"
+    },
+    {
+      "file": "C++基础知识",
+      "slug": "cpp-fundamentals",
+      "date": "2024-01-01",
+      "legacy": "/2024/01/01/C++基础知识/"
+    },
+    {
+      "file": "Codeforces Round 918 (Div.4)",
+      "slug": "codeforces-918",
+      "date": "2023-12-29",
+      "legacy": "/2023/12/29/Codeforces Round 918 (Div.4)/"
+    },
+    {
+      "file": "Django&&Python",
+      "slug": "django-python-notes",
+      "date": "2023-12-28",
+      "legacy": "/2023/12/28/Django&&Python/"
+    }
+  ],
+  "missingImages": [
+    {
+      "article": "cpp-fundamentals",
+      "original": "assets/clip_image002.png"
+    },
+    {
+      "article": "cpp-fundamentals",
+      "original": "assets/三只小猪.jpg"
+    },
+    {
+      "article": "cpp-fundamentals",
+      "original": "assets/猜数字.jpg"
+    }
+  ]
+}
