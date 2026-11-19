@@ -1,0 +1,26 @@
+{
+  "sourceRepository": "https://github.com/hblgzsx/Academic-Homepage-Typst-Tufted",
+  "article": "/posts/typst-writing-reference/",
+  "sourceArticles": [
+    "2025-12-28-Typst",
+    "2025-12-28-LaTeX-Typst"
+  ],
+  "pdfOriginalGitBlob": "5fe151ce1de91b250e626962291a10147010ca0a",
+  "pdfPages": 206,
+  "credits": [
+    "中文文档翻译：Casea",
+    "命令对照原著：Jianrui Lyu；补充：周树勋"
+  ],
+  "files": [
+    {
+      "file": "public/documents/typst-chinese-guide.pdf",
+      "bytes": 2168777,
+      "sha256": "ca14cf26445f556d7aa0934db52690b7af618150a83c814d1c8265728e73931d"
+    },
+    {
+      "file": "public/documents/latex-to-typst-original.pdf",
+      "bytes": 62706,
+      "sha256": "6e323e16fed9daa7d7ac03ae6b8e347e1ead18ab192d648bd491e663cc454b7d"
+    }
+  ]
+}

@@ -16,7 +16,7 @@ npm run new -- paper-note "论文阅读标题" paper
 npm run new -- experiment "实验记录标题" experiment
 ```
 
-在 `src/content/posts/` 写作。正文支持标题、列表、链接、代码高亮、表格、脚注及 LaTeX 数学公式。标注代码语言，例如 `cpp`、`python`。
+新文章在 `markdown/` 写作；复制 `markdown/_templates/文章模板.md` 到该文件夹即可。历史文章仍保留在 `src/content/posts/`。正文支持标题、列表、链接、代码高亮、表格、脚注及 LaTeX 数学公式。标注代码语言，例如 `cpp`、`python`。
 
 ## Typst
 
@@ -64,7 +64,7 @@ Typst 本地图片可使用相对 `src/content/typst/` 的源路径。导出 HTM
 
 完成后将 `draft: true` 改成 `false`。需要设置：
 
-- `topic`：`machine-learning`、`algorithms`、`programming`。
+- `topic`：`machine-learning`、`algorithms`、`programming`、`writing`、`notes`。
 - `kind`：学习笔记、论文阅读、技术实践、算法题解。
 - `featured: true`：首页精选；多篇时显示日期最新的一篇。
 - `updated`：可选，仅在实际修改后填写，不自动伪造更新日期。

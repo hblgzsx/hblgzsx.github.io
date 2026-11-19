@@ -6,6 +6,7 @@ const posts = defineCollection({
   loader: notebookLoader(),
   schema: z.object({
     title: z.string(),
+    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
     description: z.string(),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),

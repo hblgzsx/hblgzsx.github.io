@@ -5,7 +5,8 @@ if (!slug || !title || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || !['note', 'pa
   console.error('用法: npm run new -- english-slug "文章标题" [note|paper|experiment]');
   process.exit(1);
 }
-const file = path.join('src/content/posts', `${slug}.md`);
+const file = path.join('markdown', `${slug}.md`);
+if (fs.existsSync(path.join('src/content/posts', `${slug}.md`)) || fs.existsSync(path.join('src/content/typst', `${slug}.typ`))) throw new Error(`文章标识已存在：${slug}`);
 if (fs.existsSync(file)) throw new Error(`文章已存在：${file}`);
 const date = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 const sections = {

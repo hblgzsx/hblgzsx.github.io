@@ -94,7 +94,7 @@ theme_config:
   social:
     GitHub: https://github.com/hblgzsx || fab fa-github
     E-Mail: mailto:cyrus.zhou@mail.hfut.edu.cn || fa fa-envelope
-    学术主页: https://hblgzsx.github.io/Academic-Homepage-Typst-Tufted/ || fa fa-graduation-cap
+    学术主页: https://hblgzsx.github.io/ || fa fa-graduation-cap
   social_icons:
     enable: false
   toc:

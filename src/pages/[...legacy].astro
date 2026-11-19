@@ -1,8 +1,10 @@
 ---
 import { getPosts, postUrl } from '../lib/posts';
+import academicRedirects from '../data/academic-redirects.json';
 export async function getStaticPaths() {
   const posts = await getPosts();
-  const articlePaths = posts.filter(p => p.data.legacy).map(p => ({ params: { legacy: p.data.legacy?.replace(/^\/+|\/+$/g, '') }, props: { target: postUrl(p) } }));
+  const compatibility = academicRedirects.map(({ path, target }) => ({ params: { legacy: path }, props: { target } }));
+  const articlePaths = [...compatibility, ...posts.filter(p => p.data.legacy).map(p => ({ params: { legacy: p.data.legacy?.replace(/^\/+|\/+$/g, '') }, props: { target: postUrl(p) } }))];
   return [...articlePaths, ...['categories', 'categories/ACM', 'categories/Python', 'archives/2023', 'archives/2023/12', 'archives/2024', 'archives/2024/01', 'archives/2024/02', 'tags/ACM', 'tags/div3', 'tags/div4'].map(path => ({ params: { legacy: path }, props: { target: path.startsWith('archives') ? '/archives/' : path.startsWith('tags') ? '/tags/' : '/topics/' } }))];
 }
 const { target } = Astro.props;

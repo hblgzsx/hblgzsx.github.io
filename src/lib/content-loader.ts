@@ -1,9 +1,10 @@
 import type { Loader } from 'astro/loaders';
 import { glob } from 'astro/loaders';
 import { compileTypstPosts } from '../../scripts/typst.mjs';
+import { markdownPatterns, markdownId } from '../../scripts/markdown-files.mjs';
 
 export function notebookLoader(): Loader {
-  const markdown = glob({ pattern: '**/*.md', base: './src/content/posts' });
+  const markdown = glob({ pattern: markdownPatterns, base: '.', generateId: markdownId });
   return {
     name: 'markdown-and-typst-notebook',
     async load(context) {

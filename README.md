@@ -30,7 +30,7 @@ npm run new -- experiment-name "实验记录标题" experiment
 npm run new:typst -- typst-note "Typst 笔记标题"
 ```
 
-Markdown 文章在 src/content/posts/，Typst 文章在 src/content/typst/。新建文章默认 draft: true，完成后改为 false。两套界面共享正文，不需要写两遍。不要编辑 variants/next/source/ 中的生成文件。
+新 Markdown 文章放在 markdown/（模板和说明见 markdown/README.md），历史文章仍在 src/content/posts/，Typst 文章在 src/content/typst/。新建文章默认 draft: true，完成后改为 false。两套界面共享正文，不需要写两遍。不要编辑 variants/next/source/ 中的生成文件。
 
 文章按五大类与规范标签组织：机器学习与视觉、算法与竞赛、编程与工程、学术写作与工具、随想与资料。分类定义在 `src/data/topics.json`。
 
@@ -46,7 +46,7 @@ Pages Source 设置为 GitHub Actions。推送 master 后自动检查、构建�
 
 ## 已迁移内容
 
-博客园备份已迁入 68 篇公开内容（17 篇随笔、51 篇文章），446 张独立图片已本地化。旧 Obsidian 博客的 10 篇 Markdown 全部保留，保留真实发布日期与标签，为原文章网址生成跳转。另迁入学术主页中的 VCL 阅读笔记及 12 张配图，加入一篇 Typst 写作示例。
+博客园备份已迁入 68 篇公开内容（17 篇随笔、51 篇文章），446 张独立图片已本地化。旧 Obsidian 博客的 10 篇 Markdown 全部保留，保留真实发布日期与标签，为原文章网址生成跳转。另迁入学术主页中的 VCL 阅读笔记及 12 张配图，加入一篇 Typst 写作示例。旧学术站两篇 Typst 参考已合并为一篇，206 页中文 PDF 作为独立阅读链接保留，旧网址跳转到新文章。
 
 旧目录未改动。旧源文件原本缺失的 3 张图片以说明标注；外部图床继续使用原地址。迁移映射见 [migration-report.json](docs/migration-report.json)。旧站历史保留在 Git 提交 853b6bd。
 

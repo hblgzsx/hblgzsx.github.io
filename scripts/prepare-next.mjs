@@ -3,15 +3,13 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import { load } from 'cheerio';
 import { tagSlug } from '../src/lib/tags.mjs';
+import { listMarkdownPosts } from './markdown-files.mjs';
 
 const directory = 'variants/next/source';
 const topics = Object.fromEntries(JSON.parse(fs.readFileSync('src/data/topics.json', 'utf8')).map(t => [t.id, t.name]));
 fs.mkdirSync(`${directory}/_posts`, { recursive: true });
 fs.mkdirSync(`${directory}/_data`, { recursive: true });
-const posts = fs.readdirSync('src/content/posts').filter(f => f.endsWith('.md')).map(file => {
-  const { data } = matter(fs.readFileSync(`src/content/posts/${file}`, 'utf8'));
-  return { id: file.replace(/\.md$/, ''), data };
-});
+const posts = listMarkdownPosts();
 for (const file of fs.readdirSync('.generated/typst').filter(f => f.endsWith('.json'))) {
   const entry = JSON.parse(fs.readFileSync(`.generated/typst/${file}`, 'utf8')); posts.push(entry);
 }

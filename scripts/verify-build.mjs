@@ -41,6 +41,24 @@ for (const file of files) {
 for (const file of ['index.html', 'writing/index.html', 'about/index.html', 'search/index.html', 'archives/index.html', 'topics/index.html', '404.html', 'rss.xml', 'sitemap-index.xml', 'pagefind/pagefind.js', 'next/index.html', 'next/about/index.html', 'next/search.xml', 'next/atom.xml', 'typst/typst-research-writing.pdf', 'next/posts/typst-research-writing/index.html']) {
   if (!fs.existsSync(path.join(root, file))) errors.push(`Missing required output: ${file}`);
 }
+const academicRedirects = JSON.parse(fs.readFileSync('src/data/academic-redirects.json', 'utf8'));
+for (const { path: legacy, target } of academicRedirects) {
+  const output = path.join(root, legacy, 'index.html');
+  if (!fs.existsSync(output) || !fs.readFileSync(output, 'utf8').includes(`0;url=${target}`)) errors.push(`Missing academic redirect: ${legacy}`);
+}
+for (const prefix of ['', 'next/']) {
+  const output = path.join(root, prefix, 'posts/typst-writing-reference/index.html');
+  if (!fs.existsSync(output)) { errors.push(`Missing merged Typst article: ${prefix}`); continue; }
+  const $ = load(fs.readFileSync(output, 'utf8'));
+  const body = $(prefix ? '.post-body' : '.article-body');
+  if (body.find('iframe,object,embed').length) errors.push(`Embedded PDF in merged article: ${prefix}`);
+  if (!body.find('a[href="https://hblgzsx.github.io/documents/typst-chinese-guide.pdf"]').length) errors.push(`Missing PDF link: ${prefix}`);
+  if (body.find('table').length < 5 || body.find('svg.typst-frame').length < 100) errors.push(`Missing Typst tables or symbols: ${prefix}`);
+  if (!body.text().includes('Casea') || !body.text().includes('Jianrui Lyu')) errors.push(`Missing author credits: ${prefix}`);
+}
+const guide = path.join(root, 'documents/typst-chinese-guide.pdf');
+if (!fs.existsSync(guide) || fs.statSync(guide).size !== 2168777) errors.push('Missing original 206-page Typst PDF');
+for (const prefix of ['', 'next/']) if (fs.existsSync(path.join(root, prefix, 'posts/my-research-note/index.html'))) errors.push('Writing template leaked into published articles');
 const report = JSON.parse(fs.readFileSync('docs/migration-report.json', 'utf8'));
 for (const article of report.articles) {
   const redirect = path.join(root, article.legacy.replace(/^\//, ''), 'index.html');

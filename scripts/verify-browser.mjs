@@ -39,6 +39,21 @@ try {
     const broken = await page.locator('body').evaluate(() => document.documentElement.scrollWidth > innerWidth + 2);
     assert.equal(broken, false, `Horizontal page overflow: ${prefix}`);
   }
+  for (const prefix of ['', '/next']) {
+    await page.goto(`${base}${prefix}/posts/typst-writing-reference/`, { waitUntil: 'networkidle' });
+    assert.ok(await page.locator('svg.typst-frame').count() > 100, 'Merged Typst symbols missing');
+    assert.equal(await page.locator('iframe,object,embed').count(), 0, 'Guide must be a PDF link');
+    const guide = page.locator('a[href="https://hblgzsx.github.io/documents/typst-chinese-guide.pdf"]');
+    assert.equal(await guide.count(), 1);
+    const pdf = await page.request.get(`${base}/documents/typst-chinese-guide.pdf`);
+    assert.equal(pdf.status(), 200); assert.equal((await pdf.body()).length, 2168777);
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: 1000 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 2), false, `Merged article overflow: ${prefix}, ${width}`);
+    }
+    await page.screenshot({ path: `.qa/typst-reference-${prefix ? 'next' : 'astro'}-mobile.png`, fullPage: false });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+  }
   await page.goto(`${base}/writing/`);
   const topicButton = page.getByRole('button', { name: /机器学习与视觉/ });
   const expected = Number(await topicButton.locator('span').innerText());

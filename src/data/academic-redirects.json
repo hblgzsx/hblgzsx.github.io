@@ -1,0 +1,22 @@
+[
+  {
+    "path": "Academic-Homepage-Typst-Tufted",
+    "target": "/"
+  },
+  {
+    "path": "Academic-Homepage-Typst-Tufted/blog",
+    "target": "/writing/"
+  },
+  {
+    "path": "Academic-Homepage-Typst-Tufted/blog/2025-12-28-Typst",
+    "target": "/posts/typst-writing-reference/"
+  },
+  {
+    "path": "Academic-Homepage-Typst-Tufted/blog/2025-12-28-LaTeX-Typst",
+    "target": "/posts/typst-writing-reference/"
+  },
+  {
+    "path": "Academic-Homepage-Typst-Tufted/blog/2026-01-30-VCL",
+    "target": "/posts/variational-continual-learning/"
+  }
+]
