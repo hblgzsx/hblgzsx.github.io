@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { load } from 'cheerio';
+import { tagSlug } from '../src/lib/tags.mjs';
 
 const directory = 'variants/next/source';
 const topics = Object.fromEntries(JSON.parse(fs.readFileSync('src/data/topics.json', 'utf8')).map(t => [t.id, t.name]));
@@ -15,6 +16,8 @@ for (const file of fs.readdirSync('.generated/typst').filter(f => f.endsWith('.j
   const entry = JSON.parse(fs.readFileSync(`.generated/typst/${file}`, 'utf8')); posts.push(entry);
 }
 const published = posts.filter(p => !p.data.draft && new Date(p.data.date) <= new Date()).sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+const tagMap = Object.fromEntries([...new Set(published.flatMap(p => p.data.tags || []))].map(tag => [tag, tagSlug(tag)]));
+fs.writeFileSync('variants/next/_config.tags.yml', JSON.stringify({ tag_map: tagMap }, null, 2) + '\n');
 const generated = new Set();
 for (const post of published) {
   const file = `dist/posts/${post.id}/index.html`;
@@ -77,5 +80,6 @@ redirect('topics/index.html', '/next/categories/');
 for (const [id, name] of Object.entries(topics)) redirect(`topics/${id}/index.html`, `/next/categories/${encodeURIComponent(name)}/`);
 redirect('search/index.html', '/search/');
 redirect('rss.xml/index.html', '/rss.xml');
-redirect('tags/cpp/index.html', '/next/tags/C/');
+const obsoleteTagRedirect = `${directory}/tags/cpp/index.html`;
+if (fs.existsSync(obsoleteTagRedirect)) fs.unlinkSync(obsoleteTagRedirect);
 console.log(`Prepared ${published.length} shared posts for Hexo NexT.`);

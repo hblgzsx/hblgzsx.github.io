@@ -14,4 +14,6 @@ public/typst/
 variants/next/source/
 variants/next/public/
 variants/next/db.json
+variants/next/_config.tags.yml
 variants/next/.deploy_git/
+variants/next/_multiconfig.yml

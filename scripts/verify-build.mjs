@@ -6,6 +6,19 @@ import { load } from 'cheerio';
 const root = path.resolve('dist');
 const files = fs.readdirSync(root, { recursive: true }).filter(f => String(f).endsWith('.html'));
 const errors = [];
+const directoryEntries = new Map();
+function exactExists(target) {
+  let current = root;
+  for (const segment of path.relative(root, target).split(path.sep).filter(Boolean)) {
+    if (!directoryEntries.has(current)) {
+      try { directoryEntries.set(current, new Set(fs.readdirSync(current))); }
+      catch { return false; }
+    }
+    if (!directoryEntries.get(current).has(segment)) return false;
+    current = path.join(current, segment);
+  }
+  return true;
+}
 let links = 0;
 for (const file of files) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
@@ -22,7 +35,7 @@ for (const file of files) {
     try { pathname = decodeURIComponent(url); } catch { errors.push(`${file}: invalid URL ${url}`); continue; }
     const resolved = path.resolve(root, `.${pathname}`);
     if (!resolved.startsWith(root + path.sep) && resolved !== root) { errors.push(`${file}: invalid path ${url}`); continue; }
-    if (!fs.existsSync(resolved) && !fs.existsSync(path.join(resolved, 'index.html'))) errors.push(`${file}: missing ${url}`);
+    if (!exactExists(resolved) && !exactExists(path.join(resolved, 'index.html'))) errors.push(`${file}: missing or incorrectly cased ${url}`);
   }
 }
 for (const file of ['index.html', 'writing/index.html', 'about/index.html', 'search/index.html', 'archives/index.html', 'topics/index.html', '404.html', 'rss.xml', 'sitemap-index.xml', 'pagefind/pagefind.js', 'next/index.html', 'next/about/index.html', 'next/search.xml', 'next/atom.xml', 'typst/typst-research-writing.pdf', 'next/posts/typst-research-writing/index.html']) {

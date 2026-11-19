@@ -4,7 +4,7 @@ const root = process.cwd();
 const steps = [
   ['node_modules/astro/bin/astro.mjs', ['build'], root],
   ['scripts/prepare-next.mjs', [], root],
-  ['variants/next/node_modules/hexo/bin/hexo', ['generate', '--silent'], path.join(root, 'variants/next')],
+  ['variants/next/node_modules/hexo/bin/hexo', ['generate', '--silent', '--config', '_config.yml,_config.tags.yml'], path.join(root, 'variants/next')],
   ['node_modules/pagefind/lib/runner/bin.cjs', ['--site', 'dist'], root],
 ];
 for (const [script, args, cwd] of steps) {
